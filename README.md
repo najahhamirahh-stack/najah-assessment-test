@@ -8,20 +8,85 @@ Angular is a platform that makes it easy to build applications with the web. Ang
 
 ## Guideline
 
-You need to clone this repository and you may use whatever resources you like as long as you are following the below **Do and Don't**.
+You will be given **1 Day** to complete the test. You may use whatever resources you like as long as you are following the below **Tech stack**.
 
-## Do and Don't
-   - Do clone this repository
-   - Don't use any existing angular component, example [ng-select](https://ng-select.github.io/ng-select)
-   - Do create your own tagging input implementation and place it under shared folder.
-   - Do send us link to your finished code
+## Tech stack
+   - [Angular 6+](https://angular.io/) & [Angular CLI](https://cli.angular.io/)
+   - Any UI framework([Foundation](http://foundation.zurb.com/), [Bootstrap 4](https://getbootstrap.com/docs/4.0/getting-started/introduction/), [Semantic-UI](http://semantic-ui.com/))
+   - Any charting library([D3](https://d3js.org/), [Plot.ly](https://plot.ly/), [AmCharts](https://www.amcharts.com/)) to visualize some data
+   - Stylesheet - [Sass](https://sass-lang.com/)
+   - [NPM](https://www.npmjs.com/) for package management
+   - [Git](https://git-scm.com/) for source code version control
 
 ## Your task
 
-Create a custom **tagging input** component that will work for both **reactive form** and **model**. The **tagging input** styling need to be the same as **bootstrap form input** in term of color, width and height. You can use any custom select plugin such as [Selectize](https://github.com/selectize/selectize.js) or [Select2](https://github.com/select2/select2).
+By using the above tech stack, create a dashboard interface that consist of **two**(2) main module (Sign In and Dashboard). The module must consume the API listed in **API section** on each modules. The finished code need to be store/put in your [Github](http://github.com) repository and make it public. Then you will required to give the repository link at the end of this test.
 
-Your **tagging input** implementation need to follow Angular component creation best practise.
+### Sign In
 
-## Interface
+This module is for authenticate user before allowing them to access the **Dashboard** module. Code the **Sign In** module User Interface in Angular using HTML and Sass. Use the below credential to authenticate the user:
+  - email: **test@mail.com**
+  - password: **test@123ABC**
 
-[![Custom Tagging Interface](src/assets/img/custom-tagging.png)]()
+#### User Interface
+
+[![Sign Interface](src/assets/img/signin.jpg)]()
+
+#### API
+
+Endpoint
+```
+POST: http://wellwarserver.aemenersol.com/api_V1/Account/Login
+```
+Request Payload
+```
+{
+  email: String,
+  password: String
+}
+ ```
+Response
+```
+{
+  "id": String,
+  "auth_token": String,
+  "dateTimeNow": Date,
+  "expires_in": Time,
+  "roles": Array,
+  "validTo": Date
+}
+ ```
+
+### Dashboard
+
+This module is for displaying simple overview in form of chart and table/grid. Make sure that this module only accessible when user is authenticated. Any attempt to access this module without authentication should be redirect to **Sign In** module.
+
+#### Interface
+
+[![Sign Interface](src/assets/img/dashboard.jpg)]()
+
+#### API
+
+Endpoint
+```
+GET: http://wellwarserver.aemenersol.com/api_V1/WellStatus/GetWellStatusDashboard
+```
+Request Payload
+```
+{
+  "date": "2019-02",
+  "cluster_id": ["all"],
+  "field_id": ["all"],
+  "platform_id": ["all"]
+}
+```
+Response
+```
+{
+  "activeString": Object
+  "activeStringCount": Object,
+  "stringStatusBreakDown": Object,
+  "stringStatusByField": Object,
+  "stringStatusByType": Object
+}
+ ```
