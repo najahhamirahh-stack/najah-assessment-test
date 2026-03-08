@@ -3,14 +3,18 @@ import { NgModule } from '@angular/core';
 
 import { AppRouting } from './app.routing';
 import { AppPage } from './app.page';
+import { LoginComponent } from './login/login.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    AppPage
+    AppPage,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
-    AppRouting
+    AppRouting,
+    ReactiveFormsModule
   ],
   bootstrap: [
     AppPage
