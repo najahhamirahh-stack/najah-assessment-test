@@ -11,6 +11,7 @@
   },
   "private": true,
   "dependencies": {
+    "@amcharts/amcharts4": "^4.10.40",
     "@angular/animations": "^7.2.6",
     "@angular/common": "^7.2.6",
     "@angular/compiler": "^7.2.6",
@@ -45,6 +46,6 @@
     "sass": "^1.97.3",
     "ts-node": "^8.0.2",
     "tslint": "^5.13.0",
-    "typescript": "3.2.4"
+    "typescript": "^3.2.4"
   }
 }

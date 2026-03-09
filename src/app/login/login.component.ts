@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
         error => {
             console.error('Login Failed', error);
             this.loading = false;
-            alert('Invalid Credentials!');
+            alert('Invalid Username or Password!');
         }
     );
   }
