@@ -52,6 +52,11 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   createDonutChart() {
     let chart = am4core.create("donutChartDiv", am4charts.PieChart);
+
+    if (chart.logo) { 
+      chart.logo.disabled = true; 
+    }
+
     chart.innerRadius = am4core.percent(60);
 
     chart.colors.list = [
@@ -75,20 +80,30 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   createBarChart() {
     let chart = am4core.create("barChartDiv", am4charts.XYChart);
+
+    if (chart.logo) { 
+      chart.logo.disabled = true; 
+    }
+
     chart.data = [];
 
     let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
     categoryAxis.dataFields.category = "name";
     categoryAxis.renderer.grid.template.disabled = true; 
-    categoryAxis.renderer.labels.template.disabled = true; 
+    categoryAxis.renderer.minGridDistance = 1;
 
     let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxis.renderer.grid.template.strokeOpacity = 0.1;
-    valueAxis.renderer.labels.template.disabled = true; 
 
     let series = chart.series.push(new am4charts.ColumnSeries());
     series.dataFields.categoryX = "name";
     series.dataFields.valueY = "value";
+
+    let valueLabel = series.bullets.push(new am4charts.LabelBullet());
+    valueLabel.label.text = "{valueY}"; 
+    valueLabel.label.fontSize = 12;
+    valueLabel.label.dy = -10; 
+    valueLabel.label.fill = am4core.color("#555"); 
 
     series.columns.template.fill = am4core.color("#999999");
     series.columns.template.strokeOpacity = 0;
