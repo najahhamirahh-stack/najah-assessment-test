@@ -11,9 +11,9 @@ export class AuthService {
     login(username: string, password: string) {
         return this.http.post(`${this.apiUrl}/account/login`, { username, password }, { responseType: 'text' }) 
             .pipe(map(token => {
-                // Save token in localStorage if successful login
                 if (token) {
-                    localStorage.setItem('currentUserToken', token); 
+                    const cleanToken = token.toString().replace(/"/g, "");
+                    localStorage.setItem('currentUserToken', cleanToken);
                 }
                 return token;
             }));
@@ -23,7 +23,10 @@ export class AuthService {
         localStorage.removeItem('currentUserToken'); 
     }
 
-    public get token(): string | null {
-        return localStorage.getItem('currentUserToken'); 
+    get token(): string {
+        const rawToken = localStorage.getItem('currentUserToken');
+        if (!rawToken) return null;
+        
+        return rawToken.replace(/"/g, ''); 
     }
 }
