@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../_services/auth.service';
+import { HttpClient } from '@angular/common/http';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
@@ -13,26 +14,49 @@ am4core.useTheme(am4themes_animated);
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
+  users = []; 
+  private dashboardData: any;
+
   private donutChart: am4charts.PieChart;
   private barChart: am4charts.XYChart;
 
-  users = [
-    { firstName: 'Mark', lastName: 'Otto', userName: 'mdo' },
-    { firstName: 'Jacob', lastName: 'Throton', userName: 'fat' },
-    { firstName: 'Larry', lastName: 'theBird', userName: 'twitter' }
-  ];
+  constructor(private authService: AuthService, private router: Router, private http: HttpClient) {}
 
-  constructor(private authService: AuthService, private router: Router) {}
-
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getDashboardData();
+  }
 
   ngAfterViewInit() {
     this.createDonutChart();
     this.createBarChart();
   }
 
+  getDashboardData() {
+    this.http.get('http://test-demo.aemenersol.com/api/dashboard')
+      .subscribe((res: any) => {
+        this.dashboardData = res;
+        this.users = this.dashboardData.tableUsers;
+        
+        setTimeout(() => {
+          if (this.donutChart && this.dashboardData.chartDonut) {
+            this.donutChart.data = this.dashboardData.chartDonut;
+          }
+          if (this.barChart && this.dashboardData.chartBar) {
+            this.barChart.data = this.dashboardData.chartBar;
+          }
+        }, 500);
+      }, err => {
+        console.error("Failed to fetch Dashboard Data", err);
+      });
+  }
+
   createDonutChart() {
     let chart = am4core.create("donutChartDiv", am4charts.PieChart);
+
+    if (chart.logo) { 
+      chart.logo.disabled = true; 
+    }
+
     chart.innerRadius = am4core.percent(60);
 
     chart.colors.list = [
@@ -42,16 +66,11 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       am4core.color("#666666")
     ];
 
-    chart.data = [
-      { category: "A", value: 40 },
-      { category: "B", value: 30 },
-      { category: "C", value: 20 },
-      { category: "D", value: 10 }
-    ];
+    chart.data = [];
 
     let series = chart.series.push(new am4charts.PieSeries());
+    series.dataFields.category = "name";
     series.dataFields.value = "value";
-    series.dataFields.category = "category";
 
     series.labels.template.disabled = true;
     series.ticks.template.disabled = true;
@@ -62,28 +81,29 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   createBarChart() {
     let chart = am4core.create("barChartDiv", am4charts.XYChart);
 
-    chart.data = [
-      { category: "1", value: 50 },
-      { category: "2", value: 90 },
-      { category: "3", value: 70 },
-      { category: "4", value: 40 },
-      { category: "5", value: 65 },
-      { category: "6", value: 20 },
-      { category: "7", value: 85 }
-    ];
+    if (chart.logo) { 
+      chart.logo.disabled = true; 
+    }
+
+    chart.data = [];
 
     let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-    categoryAxis.dataFields.category = "category";
+    categoryAxis.dataFields.category = "name";
     categoryAxis.renderer.grid.template.disabled = true; 
-    categoryAxis.renderer.labels.template.disabled = true; 
+    categoryAxis.renderer.minGridDistance = 1;
 
     let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxis.renderer.grid.template.strokeOpacity = 0.1;
-    valueAxis.renderer.labels.template.disabled = true; 
 
     let series = chart.series.push(new am4charts.ColumnSeries());
+    series.dataFields.categoryX = "name";
     series.dataFields.valueY = "value";
-    series.dataFields.categoryX = "category";
+
+    let valueLabel = series.bullets.push(new am4charts.LabelBullet());
+    valueLabel.label.text = "{valueY}"; 
+    valueLabel.label.fontSize = 12;
+    valueLabel.label.dy = -10; 
+    valueLabel.label.fill = am4core.color("#555"); 
 
     series.columns.template.fill = am4core.color("#999999");
     series.columns.template.strokeOpacity = 0;

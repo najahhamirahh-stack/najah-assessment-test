@@ -21,15 +21,14 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.required]],
+      email: ['', [Validators.required, Validators.email]], 
       password: ['', Validators.required]
     });
   }
 
-  // Helper for access form fields in HTML
   get f() { return this.loginForm.controls; }
 
-  onSubmit() {
+  async onSubmit() {
     this.submitted = true;
 
     if (this.loginForm.invalid) {
@@ -39,16 +38,17 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     const { email, password } = this.loginForm.value;
 
-    this.authService.login(email, password).subscribe(
+    const isKnownUser = await this.authService.validateLocalUser(email);
+
+    this.authService.login(email, password)
+      .subscribe(
         data => {
-            console.log('Successfully Login, Token saved!');
-            this.router.navigate(['/dashboard']);
+          this.router.navigate(['/dashboard']);
         },
         error => {
-            console.error('Login Failed', error);
-            this.loading = false;
-            alert('Invalid Username or Password!');
+          this.loading = false;
+          alert('Login Failed! Please check your email and password.');
         }
-    );
+      );
   }
 }
