@@ -24,11 +24,14 @@ Since this project uses Angular 7, so the --openssl-legacy-provider flag is requ
 # How to Run the Application
 
 1. Install Dependencies
-      - npm install
+      
+      npm install
 
 2. Run Web Version (Browser)
-      - npm start
-   - Access the apps at: http://localhost:4200
+      
+      npm start
+   
+      Access the apps at: http://localhost:4200
 
 3. Run Desktop Version (Electron)
 
@@ -36,39 +39,43 @@ Since this project uses Angular 7, so the --openssl-legacy-provider flag is requ
       
       Build the project
          
-         - npm run build
+         npm run build
 
       Launch Electron
          
-         - npm run electron
+         npm run electron
 
 # Technical Implementation
    
    - Database & Auth
-         
-         PouchDB: Implemented within AuthService to handle user       authentication and local data persistence directly on the user's machine.
+         -  PouchDB: Implemented within AuthService to handle user authentication and local data persistence directly on the user's machine.
 
    - amCharts4 Customizations
-         
-         I have performed specific Best Practice adjustments to the charts:
+         -  I have performed specific Best Practice adjustments to the charts:
       
-         - Bar Chart Scaling: The Y-axis scale is fixed at clear intervals of 10 (0-80) for better readability.
-         - Custom Labels: Forced all Bar category labels to display and added LabelBullet to show exact values directly on top of each bar.
-         - Clean UI: The amCharts watermark/logo has been programmatically disabled for a more professional look.
+            - Bar Chart Scaling: The Y-axis scale is fixed at clear intervals of 10 (0-80) for better readability.
+            - Custom Labels: Forced all Bar category labels to display and added LabelBullet to show exact values directly on top of each bar.
+            - Clean UI: The amCharts watermark/logo has been programmatically disabled for a more professional look.
 
 # Key File Structure
-   - src/app/login/ — Logic and UI for the user authentication page.
+   - src/app/login/ - Logic and UI for the user authentication page.
    - src/app/dashboard/ - Chart component logic and templates.
    - src/app/_services/ - Authentication services and PouchDB integration.
    - src/app/_helpers/ - Interceptors and utility functions for API/Data handling.
    - src/app/_guards/ - Route guards to protect the Dashboard from unauthorized access.
-   - app.module.ts — The root module where all components and services are registered.
-   - tsconfig.json — TypeScript configuration for the project.
+   - app.module.ts - The root module where all components and services are registered.
+   - tsconfig.json - TypeScript configuration for the project.
    - main.js - Main Electron window configuration and lifecycle.
 
 # Troubleshooting
    If you encounter the error "Port 4200 is already in use", please clear the old Node processes:
       
       1. Run netstat -ano | findstr :4200 to find the PID.
+
+         netstat -ano | findstr :4200
       
       2. Run taskkill /F /PID [PID_Number] or simply taskkill /F /IM node.exe.
+
+         taskkill /F /PID [PID_Number]
+
+         taskkill /F /IM node.exe
