@@ -33,19 +33,24 @@ Since this project uses Angular 7, so the --openssl-legacy-provider flag is requ
 3. Run Desktop Version (Electron)
 
    To launch as a desktop application.
+      
       Build the project
+         
          - npm run build
 
       Launch Electron
+         
          - npm run electron
 
 # Technical Implementation
    
    - Database & Auth
-         - PouchDB: Implemented within AuthService to handle user       authentication and local data persistence directly on the user's machine.
+         
+         PouchDB: Implemented within AuthService to handle user       authentication and local data persistence directly on the user's machine.
 
    - amCharts4 Customizations
-      - I have performed specific Best Practice adjustments to the charts:
+         
+         I have performed specific Best Practice adjustments to the charts:
       
          - Bar Chart Scaling: The Y-axis scale is fixed at clear intervals of 10 (0-80) for better readability.
          - Custom Labels: Forced all Bar category labels to display and added LabelBullet to show exact values directly on top of each bar.
@@ -63,6 +68,7 @@ Since this project uses Angular 7, so the --openssl-legacy-provider flag is requ
 
 # Troubleshooting
    If you encounter the error "Port 4200 is already in use", please clear the old Node processes:
+      
       1. Run netstat -ano | findstr :4200 to find the PID.
       
       2. Run taskkill /F /PID [PID_Number] or simply taskkill /F /IM node.exe.
