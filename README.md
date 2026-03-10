@@ -1,27 +1,67 @@
-[![AEM Enersol](http://i0.wp.com/aemenersol.com/wp-content/uploads/2015/12/Logo-AEM-for-MegaProject-Final.png?fit=290%2C129)](http://aemenersol.com)
+# Angular & Electron Interview Test
 
-AEM Enersol is an independent integrated consultancy services, from upstream to downstream. Our impartiality allows us to provide a high quality advise to optimize clients' portfolio in a business. Our principle is grounded in an ultimate priority - achieving clients' needs at beyond the best limit.
+This project is a Dashboard Application built with the Angular 7 framework, integrated with Electron for desktop support, and utilizes PouchDB as a local NoSQL database system.
 
-# Angular Interview Test
+# Project Description
 
-Angular is a platform that makes it easy to build applications with the web. Angular combines declarative templates, dependency injection, end to end tooling, and integrated best practices to solve development challenges. Angular empowers developers to build applications that live on the web, mobile, or the desktop.
+The application is designed to display interactive data visualizations and manage user information using a modern offline-first approach.      
 
-## Guideline
+   - Angular (Front-end): Built with Angular 7 and Bootstrap 4 for a responsive user interface.
+   - Desktop Application: Powered by Electron to allow the application to run as a native desktop software on Windows, Mac, or Linux.
+   - Database: Integrated with PouchDB for local data storage, meaning the application works without needing an external backend server.
+   - Visualizations: Features high-quality amCharts4 for dynamic Donut and Bar chart displays.
 
-You need to clone this repository and you may use whatever resources you like as long as you are following the below **Do and Don't**.
+# Requirements
 
-## Do and Don't
-   - Do clone this repository
-   - Don't use any existing angular component, example [ng-select](https://ng-select.github.io/ng-select)
-   - Do create your own tagging input implementation and place it under shared folder.
-   - Do host your finished code in Git provider (Gitlab, Github or Bitbucket) and you will required to send us the link.
+   - Node.js: v22.x (Compatible with v17+)
+   - Angular CLI: v7.3.3
+   - Terminal: Command Prompt(CMD) or PowerShell
 
-## Your task
+# Note: OpenSSL Compatibility for Node v17+
 
-Create a custom **tagging input** component that will work for both **reactive form** and **model**. The **tagging input** styling need to be the same as **bootstrap form input** in term of color, width and height. You can use any custom select plugin such as [Selectize](https://github.com/selectize/selectize.js) or [Select2](https://github.com/select2/select2).
+Since this project uses Angular 7, so the --openssl-legacy-provider flag is required for Node.js v17+. But, I have integrated this into the NPM Scripts to automate the process and prevent ERR_OSSL_EVP_UNSUPPORTED errors.
 
-Your **tagging input** implementation need to follow Angular component creation best practise.
+# How to Run the Application:
 
-## Interface
+1. Install Dependencies
+      npm install
 
-[![Custom Tagging Interface](src/assets/img/custom-tagging.png)]()
+2. Run Web Version (Browser)
+      npm start
+   Access the apps at: http://localhost:4200
+
+3. Run Desktop Version (Electron)
+   To launch as a desktop application.
+
+   # Build the project
+      npm run build
+
+   # Launch Electron
+      npm run electron
+
+# Technical Implementation
+   
+   - Database & Auth
+         PouchDB: Implemented within AuthService to handle user authentication and local data persistence directly on the user's machine.
+
+   - amCharts4 Customizations
+      I have performed specific Best Practice adjustments to the charts:
+      
+      - Bar Chart Scaling: The Y-axis scale is fixed at clear intervals of 10 (0-80) for better readability.
+      - Custom Labels: Forced all Bar category labels to display and added LabelBullet to show exact values directly on top of each bar.
+      - Clean UI: The amCharts watermark/logo has been programmatically disabled for a more professional look.
+
+# Key File Structure
+   src/app/login/ — Logic and UI for the user authentication page.
+   src/app/dashboard/ - Chart component logic and templates.
+   src/app/_services/ - Authentication services and PouchDB integration.
+   src/app/_helpers/ - Interceptors and utility functions for API/Data handling.
+   src/app/_guards/ - Route guards to protect the Dashboard from unauthorized access.
+   app.module.ts — The root module where all components and services are registered.
+   tsconfig.json — TypeScript configuration for the project.
+   main.js - Main Electron window configuration and lifecycle.
+
+# Troubleshooting
+   If you encounter the error "Port 4200 is already in use", please clear the old Node processes:
+      1. Run netstat -ano | findstr :4200 to find the PID.
+      2. Run taskkill /F /PID [PID_Number] or simply taskkill /F /IM node.exe.
